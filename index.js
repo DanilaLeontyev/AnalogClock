@@ -1,8 +1,7 @@
 let canvas = document.getElementById('clock');
 let ctx = canvas.getContext('2d');
+let ring = document.getElementById('ring');
 let check = false;
-
-
 let nowMin = 0;
 let nowSec = 0;
 
@@ -85,15 +84,24 @@ function clock() {
     ctx.stroke();
     ctx.restore();
 
-    if(check == true) {
+    if (check == true) {
         ctx.save();
         ctx.beginPath();
         ctx.strokeStyle = 'rgba(181, 72, 214, 0.5)';
         ctx.lineWidth = 20;
         ctx.lineCap = 'butt';
-        ctx.arc(0, 0, 120, (Math.PI / 30) * nowMin + (Math.PI / 1800) * nowSec + Math.PI / 2, (Math.PI / 30) * nowMin + (Math.PI / 1800) * nowSec + Math.PI)
+        ctx.arc(0, 0, 120,
+            (Math.PI / 30) * nowMin + (Math.PI / 1800) * nowSec + Math.PI / 2,
+            (Math.PI / 30) * nowMin + (Math.PI / 1800) * nowSec + Math.PI)
         ctx.stroke();
         ctx.restore();
+        if (min === nowMin + 1) {
+            ring.play();
+            check = false;
+        }
+
+        console.log(min);
+        console.log(nowMin + 1);
     }
 
     ctx.restore();
