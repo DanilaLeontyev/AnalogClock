@@ -1,9 +1,11 @@
 let canvas = document.getElementById('clock');
 let ctx = canvas.getContext('2d');
 let ring = document.getElementById('ring');
+let startTomato = document.getElementById('startTomato');
 let check = false;
 let nowMin = 0;
 let nowSec = 0;
+let noSound = false;
 
 function clock() {
     let date = new Date();
@@ -45,7 +47,7 @@ function clock() {
     ctx.save();
     ctx.beginPath();
     ctx.lineWidth = 15;
-    ctx.rotate(hr * (Math.PI / 6) + (Math.PI / 360) * min + (Math.PI / 21600) * sec);
+    ctx.rotate(hr * (Math.PI / 6) + (Math.PI / 360) * min);
     ctx.moveTo(0, 0);
     ctx.lineTo(0, 60);
     ctx.stroke();
@@ -55,7 +57,7 @@ function clock() {
     ctx.save();
     ctx.beginPath();
     ctx.lineWidth = 10;
-    ctx.rotate((Math.PI / 30) * min + (Math.PI / 1800) * sec);
+    ctx.rotate((Math.PI / 30) * min);
     ctx.moveTo(0, 0);
     ctx.lineTo(0, 90);
     ctx.stroke();
@@ -85,23 +87,38 @@ function clock() {
     ctx.restore();
 
     if (check == true) {
+        // Время работы
         ctx.save();
         ctx.beginPath();
-        ctx.strokeStyle = 'rgba(181, 72, 214, 0.5)';
+        ctx.strokeStyle = 'rgba(43, 255, 89, 0.5)';
         ctx.lineWidth = 20;
         ctx.lineCap = 'butt';
+        ctx.rotate(Math.PI / 2) // Где появилось смещение я хз
         ctx.arc(0, 0, 120,
-            (Math.PI / 30) * nowMin + (Math.PI / 1800) * nowSec + Math.PI / 2,
-            (Math.PI / 30) * nowMin + (Math.PI / 1800) * nowSec + Math.PI)
+            (Math.PI / 30) * nowMin,
+            (Math.PI / 30) * (nowMin + 25));
+        ctx.stroke();
+        
+        // Время отдыха
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(219, 39, 51, 0.5)';   
+        ctx.arc(0, 0, 120,
+            (Math.PI / 30) * (nowMin + 25),
+            (Math.PI / 30) * (nowMin + 30));
         ctx.stroke();
         ctx.restore();
-        if (min === nowMin + 1) {
+
+        
+        if (min === nowMin + 25 && noSound == false) {
+            ring.play();
+            noSound = true;
+        }
+        if(min === nowMin + 30) {
+            noSound = false;
             ring.play();
             check = false;
+            addPomodoro();
         }
-
-        console.log(min);
-        console.log(nowMin + 1);
     }
 
     ctx.restore();
@@ -112,6 +129,12 @@ setInterval(clock, 1000);
 function addPomodoro() {
     check == false ? check = true : check = false;
     let nowDate = new Date();
+
+    startTomato.play();
+    setTimeout(function() {
+        startTomato.pause();
+    }, 3000)
+
     nowMin = nowDate.getMinutes();
     nowSec = nowDate.getSeconds();
 };
