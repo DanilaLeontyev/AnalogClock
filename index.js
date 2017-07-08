@@ -12,7 +12,7 @@ function clock() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.save();
     ctx.lineWidth = 5;
-    ctx.lineCap = 'round'
+    ctx.lineCap = 'round';
     ctx.translate(150, 150);
     ctx.rotate(-Math.PI);
     ctx.save();
@@ -38,9 +38,9 @@ function clock() {
     }
     ctx.restore();
 
-    var sec = date.getSeconds();
-    var min = date.getMinutes();
-    var hr = date.getHours();
+    let sec = date.getSeconds();
+    let min = date.getMinutes();
+    let hr = date.getHours();
 
     hr = hr >= 12 ? hr - 12 : hr;
     // часовая стрелка
@@ -67,14 +67,14 @@ function clock() {
     ctx.save();
     ctx.beginPath();
     ctx.lineWidth = 3;
-    ctx.arc(0, 0, 5, 0, Math.PI * 2)
+    ctx.arc(0, 0, 5, 0, Math.PI * 2);
     ctx.fillStyle = 'red';
     ctx.fill();
-    ctx.strokeStyle = 'red'
+    ctx.strokeStyle = 'red';
     ctx.rotate(sec * Math.PI / 30);
     ctx.moveTo(0, 0);
     ctx.lineTo(0, 110);
-    ctx.stroke()
+    ctx.stroke();
     ctx.restore();
 
     // Окружность часов
@@ -86,14 +86,14 @@ function clock() {
     ctx.stroke();
     ctx.restore();
 
-    if (check == true) {
+    if (check === true) {
         // Время работы
         ctx.save();
         ctx.beginPath();
         ctx.strokeStyle = 'rgba(43, 255, 89, 0.5)';
         ctx.lineWidth = 20;
         ctx.lineCap = 'butt';
-        ctx.rotate(Math.PI / 2) // Где появилось смещение я хз
+        ctx.rotate(Math.PI / 2); // Где появилось смещение я хз
         ctx.arc(0, 0, 120,
             (Math.PI / 30) * nowMin,
             (Math.PI / 30) * (nowMin + 25));
@@ -109,7 +109,7 @@ function clock() {
         ctx.restore();
 
         
-        if (min === nowMin + 25 && noSound == false) {
+        if (min === nowMin + 25 && noSound === false) {
             ring.play();
             noSound = true;
         }
@@ -127,17 +127,17 @@ function clock() {
 setInterval(clock, 1000);
 
 function addPomodoro() {
-    check == false ? check = true : check = false;
+    check === false ? check = true : check = false;
     let nowDate = new Date();
 
     startTomato.play();
     setTimeout(function() {
         startTomato.pause();
-    }, 3000)
+    }, 3000);
 
     nowMin = nowDate.getMinutes();
     nowSec = nowDate.getSeconds();
-};
+}
 
 
 canvas.addEventListener('click', addPomodoro);
