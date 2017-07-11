@@ -113,11 +113,11 @@ function clock() {
             ring.play();
             noSound = true;
         }
-        if(min === nowMin + 30) {
-            noSound = false;
+        if(min === nowMin + 30 && noSound === true) {
             ring.play();
+            noSound = false;
             check = false;
-            addPomodoro();
+            addInterval();
         }
     }
 
@@ -126,7 +126,7 @@ function clock() {
 
 setInterval(clock, 1000);
 
-function addPomodoro() {
+function addInterval() {
     check === false ? check = true : check = false;
     let nowDate = new Date();
 
@@ -140,6 +140,6 @@ function addPomodoro() {
 }
 
 
-canvas.addEventListener('click', addPomodoro);
+canvas.addEventListener('click', addInterval);
 
 
